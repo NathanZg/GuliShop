@@ -17,12 +17,12 @@ import java.util.Date;
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
-    public void insertFill(MetaObject metaObject) {
-        this.setFieldValByName("gmtCreate", new Date(), metaObject);
-        this.setFieldValByName("gmtModified", new Date(), metaObject);
+    public void insertFill(MetaObject metaObj) {
+        this.setFieldValByName("gmtCreate", new Date(), metaObj);
+        this.setFieldValByName("gmtModified", new Date(), metaObj);
     }
     @Override
-    public void updateFill(MetaObject metaObject) {
-        this.setFieldValByName("gmtModified", new Date(), metaObject);
+    public void updateFill(MetaObject metaObj) {
+        this.setFieldValByName("gmtModified", new Date(), metaObj);
     }
 }
