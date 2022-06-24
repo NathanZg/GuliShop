@@ -26,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/eduservice/teacher/")
 @Api(tags = "讲师管理")
+@CrossOrigin
 public class EduTeacherController {
 
     private EduTeacherService eduTeacherService;
@@ -37,7 +38,6 @@ public class EduTeacherController {
     @GetMapping("findAll")
     @ApiOperation("所有讲师列表")
     public Result findAll() {
-        int i = 1 / 0;
         List<EduTeacher> list = eduTeacherService.list(null);
         return Result.ok().data("items", list);
     }
@@ -88,6 +88,7 @@ public class EduTeacherController {
         if(!StringUtils.isEmpty(end)) {
             wrapper.lt("gmt_create", end);
         }
+        wrapper.orderByDesc("gmt_create");
         eduTeacherService.page(eduTeacherPage, wrapper);
         long total = eduTeacherPage.getTotal();
         List<EduTeacher> records = eduTeacherPage.getRecords();
@@ -105,7 +106,7 @@ public class EduTeacherController {
         }
     }
 
-    @GetMapping("getTeahcer/{id}")
+    @GetMapping("getTeacher/{id}")
     @ApiOperation("根据id查询讲师")
     public Result getTeacher(@PathVariable String id) {
         EduTeacher teacher = eduTeacherService.getById(id);

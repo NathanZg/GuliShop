@@ -9,6 +9,6 @@ package com.ekertree.commonutils;
  * @since JDK 1.8
  */
 public interface ResultCode {
-    public static final Integer SUCCESS = 200;
-    public static final Integer ERROR = 400;
+    public static final Integer SUCCESS = 20000;
+    public static final Integer ERROR = 20001;
 }
