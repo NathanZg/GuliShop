@@ -31,7 +31,7 @@ public class OssController {
         this.ossService = ossService;
     }
 
-    @PostMapping("avatar")
+    @PostMapping("file")
     @ApiOperation("头像上传")
     public Result uploadOssFile(MultipartFile file) {
         String url =  ossService.uploadFileAvatar(file);
