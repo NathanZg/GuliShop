@@ -9,6 +9,7 @@ import com.ekertree.eduservice.mapper.EduChapterMapper;
 import com.ekertree.eduservice.service.EduChapterService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ekertree.eduservice.service.EduVideoService;
+import com.ekertree.servicebase.excetionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,20 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
             chapterVo.setChildren(videoList);
         }
         return finalList;
+    }
+
+    @Override
+    public boolean deleteChapter(String chapterId) {
+        //根据章节id查询小节表，如果查询到有数据，则不进行删除
+        QueryWrapper<EduVideo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("chapter_id", chapterId);
+        //查询有多少条记录
+        int count = eduVideoService.count(queryWrapper);
+        if (count > 0) {
+            throw new GuliException(20001, "章节中还有小节，无法删除！");
+        }else{
+            int c = baseMapper.deleteById(chapterId);
+            return c > 0;
+        }
     }
 }

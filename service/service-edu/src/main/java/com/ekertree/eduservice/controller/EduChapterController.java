@@ -2,6 +2,7 @@ package com.ekertree.eduservice.controller;
 
 
 import com.ekertree.commonutils.Result;
+import com.ekertree.eduservice.entity.EduChapter;
 import com.ekertree.eduservice.entity.chapter.ChapterVo;
 import com.ekertree.eduservice.service.EduChapterService;
 import com.ekertree.eduservice.service.EduCourseService;
@@ -36,6 +37,34 @@ public class EduChapterController {
     public Result getChapterVideo(@PathVariable String courseId) {
         List<ChapterVo> list = eduChapterService.getChapterVideoByCourseId(courseId);
         return Result.ok().data("ChapterVideos", list);
+    }
+
+    @PostMapping("addChapter")
+    @ApiOperation("添加章节")
+    public Result addChapter(@RequestBody EduChapter eduChapter){
+        eduChapterService.save(eduChapter);
+        return Result.ok();
+    }
+
+    @GetMapping("getChapterInfo/{chapterId}")
+    @ApiOperation("获取章节信息")
+    public Result getChapterInfo(@PathVariable String chapterId){
+        EduChapter chapter = eduChapterService.getById(chapterId);
+        return Result.ok().data("chapter", chapter);
+    }
+
+    @PutMapping("updateChapter")
+    @ApiOperation("更新章节信息")
+    public Result updateChapter(@RequestBody EduChapter eduChapter){
+        eduChapterService.updateById(eduChapter);
+        return Result.ok();
+    }
+
+    @DeleteMapping("{chapterId}")
+    @ApiOperation("根据id删除章节")
+    public Result deleteChapter(@PathVariable String chapterId){
+        boolean res = eduChapterService.deleteChapter(chapterId);
+        return res == true ? Result.ok() : Result.error();
     }
 }
 
