@@ -70,29 +70,8 @@ public class EduTeacherController {
     public Result pageTeacherCondition(@ApiParam(name = "current", value = "当前页面", required = true) @PathVariable long current,
                                        @ApiParam(name = "limit", value = "每页显示条数", required = true)@PathVariable long limit,
                                        @ApiParam(name = "teacherQuery", value = "查询条件", required = false) @RequestBody(required = false) TeacherQuery teacherQuery) {
-        Page<EduTeacher> eduTeacherPage = new Page<>(current, limit);
-        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
-        String name = teacherQuery.getName();
-        Integer level = teacherQuery.getLevel();
-        String begin = teacherQuery.getBegin();
-        String end = teacherQuery.getEnd();
-        if(!StringUtils.isEmpty(name)) {
-            wrapper.like("name", name);
-        }
-        if(!StringUtils.isEmpty(level)) {
-            wrapper.eq("level", level);
-        }
-        if(!StringUtils.isEmpty(begin)) {
-            wrapper.gt("gmt_create", begin);
-        }
-        if(!StringUtils.isEmpty(end)) {
-            wrapper.lt("gmt_create", end);
-        }
-        wrapper.orderByDesc("gmt_create");
-        eduTeacherService.page(eduTeacherPage, wrapper);
-        long total = eduTeacherPage.getTotal();
-        List<EduTeacher> records = eduTeacherPage.getRecords();
-        return Result.ok().data("total", eduTeacherPage.getTotal()).data("items",records);
+        Page<EduTeacher> eduTeacherPage = eduTeacherService.pageTeacher(current,limit,teacherQuery);
+        return Result.ok().data("total", eduTeacherPage.getTotal()).data("items",eduTeacherPage.getRecords());
     }
 
     @PutMapping("addTeacher")

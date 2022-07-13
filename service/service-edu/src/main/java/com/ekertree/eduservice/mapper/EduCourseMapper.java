@@ -2,6 +2,7 @@ package com.ekertree.eduservice.mapper;
 
 import com.ekertree.eduservice.entity.EduCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ekertree.eduservice.entity.vo.CoursePublishVo;
 
 /**
  * <p>
@@ -12,5 +13,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2022-06-26
  */
 public interface EduCourseMapper extends BaseMapper<EduCourse> {
-
+    CoursePublishVo getPublishCourseInfo(String courseId);
 }

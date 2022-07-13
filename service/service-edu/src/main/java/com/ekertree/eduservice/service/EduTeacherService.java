@@ -1,7 +1,9 @@
 package com.ekertree.eduservice.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ekertree.eduservice.entity.EduTeacher;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ekertree.eduservice.entity.vo.TeacherQuery;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface EduTeacherService extends IService<EduTeacher> {
 
+    Page<EduTeacher> pageTeacher(long current, long limit, TeacherQuery teacherQuery);
 }

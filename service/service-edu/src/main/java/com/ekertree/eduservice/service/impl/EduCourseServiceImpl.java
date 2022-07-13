@@ -1,15 +1,25 @@
 package com.ekertree.eduservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ekertree.eduservice.entity.EduCourse;
 import com.ekertree.eduservice.entity.EduCourseDescription;
 import com.ekertree.eduservice.entity.vo.CourseInfoVo;
+import com.ekertree.eduservice.entity.vo.CoursePublishVo;
+import com.ekertree.eduservice.entity.vo.CourseQuery;
 import com.ekertree.eduservice.mapper.EduCourseMapper;
+import com.ekertree.eduservice.service.EduChapterService;
 import com.ekertree.eduservice.service.EduCourseDescriptionService;
 import com.ekertree.eduservice.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ekertree.eduservice.service.EduVideoService;
 import com.ekertree.servicebase.excetionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,8 +34,14 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     private EduCourseDescriptionService eduCourseDescriptionService;
 
-    public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService) {
+    private EduVideoService eduVideoService;
+
+    private EduChapterService eduChapterService;
+
+    public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService, EduVideoService eduVideoService, EduChapterService eduChapterService) {
         this.eduCourseDescriptionService = eduCourseDescriptionService;
+        this.eduVideoService = eduVideoService;
+        this.eduChapterService = eduChapterService;
     }
 
     @Override
@@ -84,6 +100,59 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         boolean b = eduCourseDescriptionService.updateById(description);
         if (!b) {
             throw new GuliException(20001, "修改描述失败！");
+        }
+    }
+
+    @Override
+    public CoursePublishVo getPublishCourseInfo(String id) {
+        return baseMapper.getPublishCourseInfo(id);
+    }
+
+    @Override
+    public Page<EduCourse> pageCourse(long current, long limit, CourseQuery courseQuery) {
+        Page<EduCourse> eduCoursePage = new Page<>(current,limit);
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
+        String title = courseQuery.getTitle();
+        String minPrice = courseQuery.getMinPrice();
+        String maxPrice = courseQuery.getMaxPrice();
+        String status = courseQuery.getStatus();
+        String begin = courseQuery.getBegin();
+        String end = courseQuery.getEnd();
+        if (!StringUtils.isEmpty(title)){
+            queryWrapper.like("title", title);
+        }
+        if (!StringUtils.isEmpty(minPrice)){
+            queryWrapper.gt("price", minPrice);
+        }
+        if (!StringUtils.isEmpty(maxPrice)){
+            queryWrapper.lt("price", maxPrice);
+        }
+        if (!StringUtils.isEmpty(status)){
+            queryWrapper.eq("status", status);
+        }
+        if(!StringUtils.isEmpty(begin)) {
+            queryWrapper.gt("gmt_create", begin);
+        }
+        if(!StringUtils.isEmpty(end)) {
+            queryWrapper.lt("gmt_create", end);
+        }
+        queryWrapper.orderByDesc("gmt_create");
+        baseMapper.selectPage(eduCoursePage, queryWrapper);
+        return eduCoursePage;
+    }
+
+    @Override
+    public void removeCourse(String courseId) {
+        //删除课程的小节
+        eduVideoService.removeVideoByCourseId(courseId);
+        //删除章节
+        eduChapterService.removeChapterByCourseId(courseId);
+        //删除描述
+        eduCourseDescriptionService.removeById(courseId);
+        //删除课程
+        int cnt = baseMapper.deleteById(courseId);
+        if (cnt == 0) {
+            throw new GuliException(20001, "删除课程失败！");
         }
     }
 }
