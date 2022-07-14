@@ -155,4 +155,16 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             throw new GuliException(20001, "删除课程失败！");
         }
     }
+
+    @Override
+    public boolean isExit(String courseId) {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", courseId);
+        Integer count = baseMapper.selectCount(wrapper);
+        if (count > 0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

@@ -30,4 +30,6 @@ public interface EduCourseService extends IService<EduCourse> {
     Page<EduCourse> pageCourse(long current, long limit, CourseQuery courseQuery);
 
     void removeCourse(String courseId);
+
+    boolean isExit(String courseId);
 }

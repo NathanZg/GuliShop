@@ -91,5 +91,12 @@ public class EduCourseController {
         eduCourseService.removeCourse(courseId);
         return Result.ok();
     }
+
+    @GetMapping("isExit/{courseId}")
+    @ApiOperation("判断该课程是否存在")
+    public Result isExit(@PathVariable String courseId) {
+        boolean isExit = eduCourseService.isExit(courseId);
+        return Result.ok().data("isExit", isExit);
+    }
 }
 
