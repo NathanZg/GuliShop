@@ -2,10 +2,13 @@ package com.ekertree.eduservice.controller;
 
 
 import com.ekertree.commonutils.Result;
+import com.ekertree.eduservice.client.VodClient;
 import com.ekertree.eduservice.entity.EduVideo;
 import com.ekertree.eduservice.service.EduVideoService;
+import com.ekertree.servicebase.excetionhandler.GuliException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,8 +27,11 @@ public class EduVideoController {
 
     private EduVideoService videoService;
 
-    public EduVideoController(EduVideoService videoService) {
+    private VodClient vodClient;
+
+    public EduVideoController(EduVideoService videoService, VodClient vodClient) {
         this.videoService = videoService;
+        this.vodClient = vodClient;
     }
 
     @PutMapping("addVideo")
@@ -37,8 +43,17 @@ public class EduVideoController {
 
     @DeleteMapping("{id}")
     @ApiOperation("删除小节")
-    //TODO 删除小节的时候需要把视频删除
     public Result deleteVideo(@PathVariable String id) {
+        //根据小节id得到所有视频id
+        EduVideo video = videoService.getById(id);
+        String videoSourceId = video.getVideoSourceId();
+        //如果视频id不为空才删视频
+        if (!StringUtils.isEmpty(videoSourceId)) {
+            Result result = vodClient.removeAliYunVideo(videoSourceId);
+            if (result.getCode() == 20001) {
+                throw new GuliException(20001, "删除视频失败！");
+            }
+        }
         videoService.removeById(id);
         return Result.ok();
     }

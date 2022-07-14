@@ -2,6 +2,8 @@ package com.ekertree.vod.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * ClassName: VodService
  * Description:
@@ -12,4 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface VodService {
     String uploadAliYunVideo(MultipartFile file);
+
+    void removeMoreAliYunVideo(List videoIdList);
+
+    void removeAliYunVideo(String id);
 }

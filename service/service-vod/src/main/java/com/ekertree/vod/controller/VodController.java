@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * ClassName: VodController
  * Description:
@@ -42,18 +44,14 @@ public class VodController {
     @DeleteMapping("removeAliYunVideo/{id}")
     @ApiOperation("根据id删除视频")
     public Result removeAliYunVideo(@PathVariable String id) {
-        try {
-            //初始化对象
-            DefaultAcsClient client = InitVodClient.initVodClient(ConstantVodUtils.ACCESS_KEY_ID, ConstantVodUtils.ACCESS_KEY_SECRET);
-            //创建删除视频的request对象
-            DeleteVideoRequest request = new DeleteVideoRequest();
-            //设置视频id
-            request.setVideoIds(id);
-            client.getAcsResponse(request);
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new GuliException(20001, "删除视频失败！");
-        }
+        vodService.removeAliYunVideo(id);
+        return Result.ok();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("删除多个视频")
+    public Result deleteBatch(@RequestParam("videoIdList") List<String> videoIdList) {
+        vodService.removeMoreAliYunVideo(videoIdList);
         return Result.ok();
     }
 }

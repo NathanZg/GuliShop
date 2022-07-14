@@ -48,6 +48,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
         //往课程表添加课程基本信息
         EduCourse eduCourse = new EduCourse();
+        eduCourse.setIsDeleted(0);
         BeanUtils.copyProperties(courseInfoVo, eduCourse);
         int insert = baseMapper.insert(eduCourse);
         if (insert == 0) {
