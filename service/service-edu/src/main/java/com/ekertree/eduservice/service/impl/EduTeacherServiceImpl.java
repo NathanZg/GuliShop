@@ -8,6 +8,7 @@ import com.ekertree.eduservice.entity.vo.TeacherQuery;
 import com.ekertree.eduservice.mapper.EduTeacherMapper;
 import com.ekertree.eduservice.service.EduTeacherService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -47,5 +48,15 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         wrapper.orderByDesc("gmt_create");
         baseMapper.selectPage(eduTeacherPage, wrapper);
         return eduTeacherPage;
+    }
+
+    @Override
+    @Cacheable(key = "'selectHotTeacher'",value = "hotTeacher")
+    public List<EduTeacher> selectHotTeacher() {
+        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("gmt_create");
+        wrapper.last("limit 4");
+        List<EduTeacher> teacherList = baseMapper.selectList(wrapper);
+        return teacherList;
     }
 }

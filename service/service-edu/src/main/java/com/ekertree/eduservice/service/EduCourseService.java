@@ -32,4 +32,6 @@ public interface EduCourseService extends IService<EduCourse> {
     void removeCourse(String courseId);
 
     boolean isExit(String courseId);
+
+    List<EduCourse> selectHotCourse();
 }

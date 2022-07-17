@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ekertree.eduservice.service.EduVideoService;
 import com.ekertree.servicebase.excetionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -48,7 +49,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
         //往课程表添加课程基本信息
         EduCourse eduCourse = new EduCourse();
-        eduCourse.setIsDeleted(0);
         BeanUtils.copyProperties(courseInfoVo, eduCourse);
         int insert = baseMapper.insert(eduCourse);
         if (insert == 0) {
@@ -167,5 +167,16 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         }else {
             return false;
         }
+    }
+
+    @Override
+    @Cacheable(key = "'selectHotCourse'",value = "hotCourse")
+    public List<EduCourse> selectHotCourse() {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("view_count");
+        wrapper.eq("status", "Normal");
+        wrapper.last("limit 8");
+        List<EduCourse> courseList = baseMapper.selectList(wrapper);
+        return courseList;
     }
 }
