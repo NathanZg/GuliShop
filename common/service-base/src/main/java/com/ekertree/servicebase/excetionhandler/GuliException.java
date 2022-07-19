@@ -3,6 +3,7 @@ package com.ekertree.servicebase.excetionhandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.implementation.bind.annotation.Super;
 
 /**
  * ClassName: GuliException
@@ -17,5 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GuliException extends RuntimeException{
     private Integer code;
-    private String msg;
+
+    public GuliException(Integer code,String message) {
+        super(message);
+        this.code = code;
+    }
 }
