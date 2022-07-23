@@ -10,6 +10,7 @@ import com.ekertree.eduservice.service.EduTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,7 @@ public class EduTeacherController {
 
     @DeleteMapping("{id}")
     @ApiOperation("逻辑删除对应id的讲师")
+    @CacheEvict(key = "'selectHotTeacher'",value = "hotTeacher")
     public Result  removeTeacher(@ApiParam(name = "id", value = "讲师id", required = true) @PathVariable("id") String id) {
         boolean flag = eduTeacherService.removeById(id);
         if (flag) {
@@ -94,6 +96,7 @@ public class EduTeacherController {
 
     @PostMapping("updateTeacher")
     @ApiOperation("更新讲师信息")
+    @CacheEvict(key = "'selectHotTeacher'",value = "hotTeacher")
     public Result updateTeacher(@RequestBody EduTeacher eduTeacher) {
         boolean flag = eduTeacherService.updateById(eduTeacher);
         if(flag) {

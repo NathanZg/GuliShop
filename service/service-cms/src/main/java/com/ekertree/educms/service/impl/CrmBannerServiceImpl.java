@@ -65,7 +65,7 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
         //根据加入时间降序排列，显示最新加入的两条
         QueryWrapper<CrmBanner> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("gmt_create");
-        wrapper.last("limit 2");
+        wrapper.last("limit 3");
         List<CrmBanner> crmBanners = baseMapper.selectList(wrapper);
         return crmBanners;
     }

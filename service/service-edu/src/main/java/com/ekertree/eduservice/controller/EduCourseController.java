@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class EduCourseController {
 
     @PostMapping("addCourseInfo")
     @ApiOperation("添加课程信息")
+    @CacheEvict(key = "'selectHotCourse'",value = "hotCourse")
     public Result addCourseInfo(@RequestBody CourseInfoVo courseInfoVo) {
         String courseId = eduCourseService.saveCourseInfo(courseInfoVo);
         return Result.ok().data("courseId",courseId);
@@ -53,6 +55,7 @@ public class EduCourseController {
 
     @PostMapping("updateCourseInfo")
     @ApiOperation("修改课程信息")
+    @CacheEvict(key = "'selectHotCourse'",value = "hotCourse")
     public Result updateCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
         eduCourseService.updateCourseInfo(courseInfoVo);
         return Result.ok();
@@ -87,6 +90,7 @@ public class EduCourseController {
 
     @DeleteMapping("{courseId}")
     @ApiOperation("根据课程id删除课程")
+    @CacheEvict(key = "'selectHotCourse'",value = "hotCourse")
     public Result deleteCourse(@PathVariable String courseId){
         eduCourseService.removeCourse(courseId);
         return Result.ok();

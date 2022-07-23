@@ -9,6 +9,7 @@ import com.ekertree.educms.entity.vo.BannerVo;
 import com.ekertree.educms.service.CrmBannerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -43,6 +44,7 @@ public class BannerAdminController {
 
     @PutMapping("addBanner")
     @ApiOperation("添加Bannner")
+    @CacheEvict(key = "'selectBannerList'",value = "bannerList")
     public Result addBanner(@RequestBody CrmBanner crmBanner) {
         bannerService.save(crmBanner);
         return Result.ok();
@@ -57,6 +59,7 @@ public class BannerAdminController {
 
     @PostMapping("updateBanner")
     @ApiOperation("修改Bannner")
+    @CacheEvict(key = "'selectBannerList'",value = "bannerList")
     public Result updateBanner(@RequestBody CrmBanner crmBanner) {
         bannerService.updateById(crmBanner);
         return Result.ok();
@@ -64,6 +67,7 @@ public class BannerAdminController {
 
     @DeleteMapping("removeBanner/{id}")
     @ApiOperation("删除Bannner")
+    @CacheEvict(key = "'selectBannerList'",value = "bannerList")
     public Result removeBannerById(@PathVariable("id") String id) {
         bannerService.removeById(id);
         return Result.ok();

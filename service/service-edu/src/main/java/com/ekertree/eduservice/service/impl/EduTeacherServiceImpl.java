@@ -12,7 +12,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -58,5 +60,28 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         wrapper.last("limit 4");
         List<EduTeacher> teacherList = baseMapper.selectList(wrapper);
         return teacherList;
+    }
+
+    @Override
+    public Map<String, Object> getFrontPageTeacherList(Page<EduTeacher> page) {
+        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id");
+        baseMapper.selectPage(page, wrapper);
+        HashMap<String, Object> map = new HashMap<>();
+        long current = page.getCurrent();
+        long pages = page.getPages();
+        long size = page.getSize();
+        long total = page.getTotal();
+        boolean hasNext = page.hasNext();
+        boolean hasPrevious = page.hasPrevious();
+        List<EduTeacher> records = page.getRecords();
+        map.put("items", records);
+        map.put("current", current);
+        map.put("pages", pages);
+        map.put("size", size);
+        map.put("total", total);
+        map.put("hasNext", hasNext);
+        map.put("hasPrevious", hasPrevious);
+        return map;
     }
 }

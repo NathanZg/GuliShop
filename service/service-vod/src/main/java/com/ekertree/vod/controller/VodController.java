@@ -54,4 +54,11 @@ public class VodController {
         vodService.removeMoreAliYunVideo(videoIdList);
         return Result.ok();
     }
+
+    @GetMapping("getPlayAuth/{vid}")
+    @ApiOperation("获取播放凭证")
+    public Result getPlayAuth(@PathVariable("vid") String vid) {
+        String playAuth = vodService.getPlayAuth(vid);
+        return Result.ok().data("playAuth", playAuth);
+    }
 }

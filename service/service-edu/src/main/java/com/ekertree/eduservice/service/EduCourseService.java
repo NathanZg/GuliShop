@@ -3,11 +3,14 @@ package com.ekertree.eduservice.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ekertree.eduservice.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ekertree.eduservice.entity.frontvo.CourseFrontVo;
+import com.ekertree.eduservice.entity.frontvo.CourseWebVo;
 import com.ekertree.eduservice.entity.vo.CourseInfoVo;
 import com.ekertree.eduservice.entity.vo.CoursePublishVo;
 import com.ekertree.eduservice.entity.vo.CourseQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -34,4 +37,10 @@ public interface EduCourseService extends IService<EduCourse> {
     boolean isExit(String courseId);
 
     List<EduCourse> selectHotCourse();
+
+    List<EduCourse> teacherCourseList(String teacherId);
+
+    Map<String, Object> getCourseFrontList(Page<EduCourse> pageCourse, CourseFrontVo courseFrontVo);
+
+    CourseWebVo getBaseCourseInfo(String courseId);
 }

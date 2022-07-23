@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ekertree.eduservice.entity.vo.TeacherQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -20,4 +21,6 @@ public interface EduTeacherService extends IService<EduTeacher> {
     Page<EduTeacher> pageTeacher(long current, long limit, TeacherQuery teacherQuery);
 
     List<EduTeacher> selectHotTeacher();
+
+    Map<String, Object> getFrontPageTeacherList(Page<EduTeacher> page);
 }

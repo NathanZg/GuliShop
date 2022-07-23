@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ekertree.eduservice.entity.EduCourse;
 import com.ekertree.eduservice.entity.EduCourseDescription;
+import com.ekertree.eduservice.entity.EduTeacher;
+import com.ekertree.eduservice.entity.frontvo.CourseFrontVo;
+import com.ekertree.eduservice.entity.frontvo.CourseWebVo;
 import com.ekertree.eduservice.entity.vo.CourseInfoVo;
 import com.ekertree.eduservice.entity.vo.CoursePublishVo;
 import com.ekertree.eduservice.entity.vo.CourseQuery;
@@ -16,11 +19,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ekertree.eduservice.service.EduVideoService;
 import com.ekertree.servicebase.excetionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -179,4 +185,60 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         List<EduCourse> courseList = baseMapper.selectList(wrapper);
         return courseList;
     }
+
+    @Override
+    public List<EduCourse> teacherCourseList(String teacherId) {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        wrapper.eq("teacher_id", teacherId);
+        return baseMapper.selectList(wrapper);
+    }
+
+    @Override
+    public Map<String, Object> getCourseFrontList(Page<EduCourse> pageCourse, CourseFrontVo courseFrontVo) {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        //一级分类
+        if (!StringUtils.isEmpty(courseFrontVo.getSubjectParentId())){
+            wrapper.eq("subject_parent_id", courseFrontVo.getSubjectParentId());
+        }
+        //二级分类
+        if (!StringUtils.isEmpty(courseFrontVo.getSubjectId())){
+            wrapper.eq("subject_id", courseFrontVo.getSubjectId());
+        }
+        //关注度
+        if (!StringUtils.isEmpty(courseFrontVo.getBuyCountSort())){
+            wrapper.orderByDesc("buy_count");
+        }
+        //最新
+        if (!StringUtils.isEmpty(courseFrontVo.getGmtCreateSort())){
+            wrapper.orderByDesc("gmt_create");
+        }
+        //价格
+        if (!StringUtils.isEmpty(courseFrontVo.getPriceSort())){
+            wrapper.orderByDesc("price");
+        }
+        wrapper.eq("status", "Normal");
+        baseMapper.selectPage(pageCourse, wrapper);
+        HashMap<String, Object> map = new HashMap<>();
+        long current = pageCourse.getCurrent();
+        long pages = pageCourse.getPages();
+        long size = pageCourse.getSize();
+        long total = pageCourse.getTotal();
+        boolean hasNext = pageCourse.hasNext();
+        boolean hasPrevious = pageCourse.hasPrevious();
+        List<EduCourse> records = pageCourse.getRecords();
+        map.put("items", records);
+        map.put("current", current);
+        map.put("pages", pages);
+        map.put("size", size);
+        map.put("total", total);
+        map.put("hasNext", hasNext);
+        map.put("hasPrevious", hasPrevious);
+        return map;
+    }
+
+    @Override
+    public CourseWebVo getBaseCourseInfo(String courseId) {
+        return baseMapper.getBaseCourseInfo(courseId);
+    }
+
 }
