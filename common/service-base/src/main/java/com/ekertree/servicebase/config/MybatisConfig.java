@@ -1,27 +1,23 @@
-package com.ekertree.eduservice.config;
+package com.ekertree.servicebase.config;
 
-import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * ClassName: EduConfig
+ * ClassName: MybatisConfig
  * Description:
- * date: 2022/6/20 8:34
+ * date: 2022/7/23 17:26
  *
  * @author Ekertree
  * @since JDK 1.8
  */
 @Configuration
-@MapperScan("com.ekertree.eduservice.mapper")
-public class EduConfig {
-
+public class MybatisConfig {
     /**
      * SQL 执行性能分析插件
      * 开发环境使用，线上不推荐。 maxTime 指的是 sql 最大执行时长

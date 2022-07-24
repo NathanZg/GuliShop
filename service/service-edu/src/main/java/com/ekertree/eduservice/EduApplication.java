@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @since JDK 1.8
  */
 @SpringBootApplication
+@MapperScan("com.ekertree.eduservice.mapper")
 @ComponentScan(basePackages = {"com.ekertree"})
 @EnableDiscoveryClient//nacos注册
 @EnableFeignClients//服务调用

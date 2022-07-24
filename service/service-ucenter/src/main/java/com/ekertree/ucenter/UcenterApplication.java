@@ -15,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan("com.ekertree")
+@MapperScan("com.ekertree.ucenter.mapper")
 public class UcenterApplication {
     public static void main(String[] args) {
         SpringApplication.run(UcenterApplication.class, args);
