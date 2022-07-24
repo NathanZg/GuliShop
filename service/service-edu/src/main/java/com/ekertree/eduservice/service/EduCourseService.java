@@ -38,7 +38,7 @@ public interface EduCourseService extends IService<EduCourse> {
 
     List<EduCourse> selectHotCourse();
 
-    List<EduCourse> teacherCourseList(String teacherId);
+    Page<EduCourse> teacherDetailCourseList(String teacherId,long current,long limit);
 
     Map<String, Object> getCourseFrontList(Page<EduCourse> pageCourse, CourseFrontVo courseFrontVo);
 

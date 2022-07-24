@@ -47,9 +47,16 @@ public class TeacherFrontController {
     public Result getFrontTeacherInfo(@PathVariable("teacherId") String teacherId){
         //根据讲师id查询讲师信息
         EduTeacher teacher = teacherService.getById(teacherId);
-        //根据讲师id查询所讲课程
-        List<EduCourse> courseList = courseService.teacherCourseList(teacherId);
-        return Result.ok().data("teacher",teacher).data("courseList",courseList);
+        return Result.ok().data("teacher",teacher);
+    }
+
+    @GetMapping("getFrontTeacherCourseList/{teacherId}/{current}/{limit}")
+    @ApiOperation("讲师主讲课程")
+    public Result getTeacherCourseList(@PathVariable("teacherId") String teacherId,
+                                       @PathVariable("current") long current,
+                                       @PathVariable("limit") long limit){
+        Page<EduCourse> page = courseService.teacherDetailCourseList(teacherId, current, limit);
+        return Result.ok().data("total", page.getTotal()).data("teacherCourseList", page.getRecords());
     }
 }
 

@@ -187,10 +187,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    public List<EduCourse> teacherCourseList(String teacherId) {
+    public Page<EduCourse> teacherDetailCourseList(String teacherId,long current,long limit) {
         QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
         wrapper.eq("teacher_id", teacherId);
-        return baseMapper.selectList(wrapper);
+        Page<EduCourse> page = new Page<>(current,limit);
+        baseMapper.selectPage(page, wrapper);
+        return page;
     }
 
     @Override
