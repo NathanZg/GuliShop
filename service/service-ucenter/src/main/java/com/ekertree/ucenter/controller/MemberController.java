@@ -4,6 +4,7 @@ package com.ekertree.ucenter.controller;
 import com.ekertree.commonutils.JwtUtils;
 import com.ekertree.commonutils.Result;
 import com.ekertree.servicebase.entity.vo.CommentUserVo;
+import com.ekertree.servicebase.entity.vo.OrderUserVo;
 import com.ekertree.ucenter.entity.Member;
 import com.ekertree.ucenter.entity.vo.LoginVo;
 import com.ekertree.ucenter.entity.vo.RegisterVo;
@@ -60,12 +61,21 @@ public class MemberController {
     }
 
     @GetMapping("getInfoUc/{id}")
-    @ApiOperation("实现用户id获取用户信息")
+    @ApiOperation("实现用户id获取评论用户信息")
     public CommentUserVo getInfoUc(@PathVariable("id") String id) {
         Member member = memberService.getById(id);
         CommentUserVo commentUserVo = new CommentUserVo();
         BeanUtils.copyProperties(member, commentUserVo);
         return commentUserVo;
+    }
+
+    @GetMapping("getOrderUserInfo/{id}")
+    @ApiOperation("实现用户id获取订单用户信息")
+    public OrderUserVo getOrderUserInfo(@PathVariable("id") String id) {
+        Member member = memberService.getById(id);
+        OrderUserVo orderUserVo = new OrderUserVo();
+        BeanUtils.copyProperties(member, orderUserVo);
+        return orderUserVo;
     }
 }
 

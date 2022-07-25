@@ -11,10 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -75,5 +72,18 @@ public class EduCommentServiceImpl extends ServiceImpl<EduCommentMapper, EduComm
         }
         baseMapper.selectPage(page,queryWrapper);
         return page;
+    }
+
+    @Override
+    public List<Integer> getCommentCounts(String courseIds) {
+        String[] Ids = courseIds.split(",");
+        List<Integer> countList = new ArrayList<>();
+        for (int i = 0; i < Ids.length; i++) {
+            QueryWrapper<EduComment> wrapper = new QueryWrapper<>();
+            wrapper.eq("course_id", Ids[i]);
+            Integer count = baseMapper.selectCount(wrapper);
+            countList.add(count);
+        }
+        return countList;
     }
 }

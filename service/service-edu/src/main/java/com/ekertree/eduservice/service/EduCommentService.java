@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ekertree.eduservice.entity.EduCourse;
 import com.ekertree.eduservice.entity.vo.CommentQuery;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,4 +22,6 @@ public interface EduCommentService extends IService<EduComment> {
     Map<String, Object> pageComment(long page, long limit, String courseId);
 
     Page<EduComment> pageCourse(long current, long limit, String courseId,CommentQuery commentQuery);
+
+    List<Integer> getCommentCounts(String courseIds);
 }

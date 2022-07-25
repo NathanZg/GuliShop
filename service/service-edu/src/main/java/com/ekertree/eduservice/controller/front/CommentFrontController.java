@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,5 +70,16 @@ public class CommentFrontController {
         }
         commentService.save(comment);
         return Result.ok();
+    }
+
+    @PostMapping("getCommentCounts")
+    @ApiOperation("查询课程列表的评论数")
+    public Result getCommentCounts(@RequestBody String courseIds){
+        if (!StringUtils.isEmpty(courseIds)) {
+            List<Integer> countList = commentService.getCommentCounts(courseIds);
+            return Result.ok().data("countList",countList);
+        }else {
+            return Result.ok();
+        }
     }
 }
