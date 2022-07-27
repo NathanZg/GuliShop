@@ -59,10 +59,10 @@ public class EduCommentServiceImpl extends ServiceImpl<EduCommentMapper, EduComm
             queryWrapper.eq("content", content);
         }
         if (!StringUtils.isEmpty(begin)){
-            queryWrapper.lt("gmt_create", begin);
+            queryWrapper.ge("gmt_create", begin);
         }
         if (!StringUtils.isEmpty(end)){
-            queryWrapper.lt("gmt_create", end);
+            queryWrapper.le("gmt_create", end);
         }
         if (!StringUtils.isEmpty(memberId)){
             queryWrapper.like("member_id", memberId);

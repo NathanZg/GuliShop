@@ -1,20 +1,11 @@
 package com.ekertree.smsservice.service.impl;
 
 import com.ekertree.smsservice.service.SmsService;
-import com.ekertree.smsservice.utils.HttpUtils;
 import com.ekertree.smsservice.utils.KeyUtils;
-import com.ekertree.smsservice.utils.RandomUtil;
 import com.ekertree.smsservice.utils.SendUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * ClassName: SmsServiceImpl

@@ -129,19 +129,19 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             queryWrapper.like("title", title);
         }
         if (!StringUtils.isEmpty(minPrice)){
-            queryWrapper.gt("price", minPrice);
+            queryWrapper.ge("price", minPrice);
         }
         if (!StringUtils.isEmpty(maxPrice)){
-            queryWrapper.lt("price", maxPrice);
+            queryWrapper.le("price", maxPrice);
         }
         if (!StringUtils.isEmpty(status)){
             queryWrapper.eq("status", status);
         }
         if(!StringUtils.isEmpty(begin)) {
-            queryWrapper.gt("gmt_create", begin);
+            queryWrapper.ge("gmt_create", begin);
         }
         if(!StringUtils.isEmpty(end)) {
-            queryWrapper.lt("gmt_create", end);
+            queryWrapper.le("gmt_create", end);
         }
         queryWrapper.orderByDesc("gmt_create");
         baseMapper.selectPage(eduCoursePage, queryWrapper);
@@ -243,4 +243,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return baseMapper.getBaseCourseInfo(courseId);
     }
 
+    @Override
+    public void addBuyCount(String courseId) {
+        EduCourse course = baseMapper.selectById(courseId);
+        course.setBuyCount(course.getBuyCount() + 1);
+        baseMapper.updateById(course);
+    }
 }

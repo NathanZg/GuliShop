@@ -102,5 +102,18 @@ public class EduCourseController {
         boolean isExit = eduCourseService.isExit(courseId);
         return Result.ok().data("isExit", isExit);
     }
+
+    @GetMapping("addBuyCount/{courseId}")
+    @ApiOperation("增加一次购买次数")
+    public Result addBuyCount(@PathVariable("courseId") String courseId) {
+        eduCourseService.addBuyCount(courseId);
+        return Result.ok();
+    }
+
+    @GetMapping("getCourseCount")
+    @ApiOperation("获取课程总数")
+    public Integer getCourseCount(){
+        return eduCourseService.count(null);
+    }
 }
 

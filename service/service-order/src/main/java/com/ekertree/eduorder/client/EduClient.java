@@ -1,5 +1,6 @@
 package com.ekertree.eduorder.client;
 
+import com.ekertree.commonutils.Result;
 import com.ekertree.servicebase.entity.vo.OrderCourseVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -20,4 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface EduClient {
     @GetMapping("/eduservice/coursefront/getOrderCourseInfo/{courseId}")
     OrderCourseVo getOrderCourseInfo(@PathVariable String courseId);
+
+    @GetMapping("addBuyCount/{courseId}")
+    Result addBuyCount(@PathVariable("courseId") String courseId);
 }

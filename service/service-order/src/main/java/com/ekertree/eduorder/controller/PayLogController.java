@@ -1,7 +1,11 @@
 package com.ekertree.eduorder.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ekertree.commonutils.Result;
+import com.ekertree.eduorder.client.EduClient;
+import com.ekertree.eduorder.entity.Order;
+import com.ekertree.eduorder.service.OrderService;
 import com.ekertree.eduorder.service.PayLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,9 +29,13 @@ import java.util.Map;
 @Api("微信二维码")
 public class PayLogController {
     private PayLogService payLogService;
+    private OrderService orderService;
+    private EduClient eduClient;
 
-    public PayLogController(PayLogService payLogService) {
+    public PayLogController(PayLogService payLogService, OrderService orderService, EduClient eduClient) {
         this.payLogService = payLogService;
+        this.orderService = orderService;
+        this.eduClient = eduClient;
     }
 
     @GetMapping("createNative/{orderNo}")
@@ -48,6 +56,10 @@ public class PayLogController {
         if (map.get("trade_state").equals("SUCCESS")) {
             //添加记录到支付表，更新订单表状态
             payLogService.updateOrderStatus(map);
+            QueryWrapper<Order> wrapper = new QueryWrapper<>();
+            wrapper.eq("order_no", orderNo);
+            Order order = orderService.getOne(wrapper);
+            eduClient.addBuyCount(order.getCourseId());
             return Result.ok().setMessage("支付成功！");
         }
         return Result.ok().setCode(25000).setMessage("正在支付中....");

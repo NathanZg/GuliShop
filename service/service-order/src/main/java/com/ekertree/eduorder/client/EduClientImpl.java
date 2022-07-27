@@ -1,5 +1,6 @@
 package com.ekertree.eduorder.client;
 
+import com.ekertree.commonutils.Result;
 import com.ekertree.servicebase.entity.vo.OrderCourseVo;
 
 /**
@@ -15,5 +16,10 @@ public class EduClientImpl implements EduClient{
     @Override
     public OrderCourseVo getOrderCourseInfo(String courseId) {
         return null;
+    }
+
+    @Override
+    public Result addBuyCount(String courseId) {
+        return Result.error();
     }
 }

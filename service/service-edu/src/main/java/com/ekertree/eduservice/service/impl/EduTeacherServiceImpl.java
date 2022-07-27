@@ -42,10 +42,10 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
             wrapper.eq("level", level);
         }
         if(!StringUtils.isEmpty(begin)) {
-            wrapper.gt("gmt_create", begin);
+            wrapper.ge("gmt_create", begin);
         }
         if(!StringUtils.isEmpty(end)) {
-            wrapper.lt("gmt_create", end);
+            wrapper.le("gmt_create", end);
         }
         wrapper.orderByDesc("gmt_create");
         baseMapper.selectPage(eduTeacherPage, wrapper);

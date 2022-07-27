@@ -24,4 +24,6 @@ public interface MemberService extends IService<Member> {
     String callback(String code, String state);
 
     Member getMemberByOpenId(String openid);
+
+    Integer countRegisterDay(String day);
 }

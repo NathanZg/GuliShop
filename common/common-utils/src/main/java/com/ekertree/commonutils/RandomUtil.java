@@ -1,4 +1,4 @@
-package com.ekertree.smsservice.utils;
+package com.ekertree.commonutils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
