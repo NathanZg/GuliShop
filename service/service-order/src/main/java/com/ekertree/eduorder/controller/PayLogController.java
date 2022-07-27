@@ -25,7 +25,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/eduorder/paylog/")
-@CrossOrigin
 @Api("微信二维码")
 public class PayLogController {
     private PayLogService payLogService;

@@ -27,7 +27,6 @@ import java.net.URLEncoder;
  * @since JDK 1.8
  */
 @Controller
-@CrossOrigin
 @Api(tags = "微信登陆")
 @RequestMapping("/api/ucenter/wx/")
 public class WxApiController {

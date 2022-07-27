@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/edusms/sms")
-@CrossOrigin
 @Api(tags = "短信发送")
 public class SmsController {
 

@@ -26,7 +26,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/eduservice/frontcomment/")
-@CrossOrigin
 @Api(tags = "评论管理")
 public class CommentFrontController {
     private EduCommentService commentService;

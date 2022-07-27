@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/eduorder/order/")
-@CrossOrigin
 @Api(tags = "订单管理")
 public class OrderController {
     private OrderService orderService;

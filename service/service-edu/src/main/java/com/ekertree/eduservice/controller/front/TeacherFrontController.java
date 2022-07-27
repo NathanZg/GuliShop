@@ -22,7 +22,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/eduservice/teacherfront/")
-@CrossOrigin
 @Api(tags = "前端讲师管理")
 public class TeacherFrontController {
     private EduTeacherService teacherService;

@@ -24,7 +24,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/eduvod/video/")
-@CrossOrigin
 @Api(tags = "视频管理")
 public class VodController {
 

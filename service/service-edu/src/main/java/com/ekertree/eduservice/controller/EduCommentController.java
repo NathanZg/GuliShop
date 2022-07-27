@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/eduservice/comment")
-@CrossOrigin
 @Api(tags = "评论后台管理")
 public class EduCommentController {
 
