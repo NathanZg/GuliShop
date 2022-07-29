@@ -45,4 +45,8 @@ public interface EduCourseService extends IService<EduCourse> {
     CourseWebVo getBaseCourseInfo(String courseId);
 
     void addBuyCount(String courseId);
+
+    void addCourseViewCount(String courseId);
+
+    void saveCourseViewCount();
 }

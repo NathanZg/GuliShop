@@ -2,6 +2,7 @@ package com.ekertree.ucenter.controller;
 
 
 import com.ekertree.commonutils.JwtUtils;
+import com.ekertree.commonutils.MD5;
 import com.ekertree.commonutils.Result;
 import com.ekertree.servicebase.entity.vo.CommentUserVo;
 import com.ekertree.servicebase.entity.vo.OrderUserVo;
@@ -56,7 +57,12 @@ public class MemberController {
         String memberId = JwtUtils.getMemberIdByJwtToken(request);
         //通过id获取信息
         Member member = memberService.getById(memberId);
-        return Result.ok().data("userInfo", member);
+        if (member != null) {
+            member.setPassword("");
+            return Result.ok().data("userInfo", member);
+        }else{
+            return Result.error().setCode(28005).setMessage("请先登陆！");
+        }
     }
 
     @GetMapping("getInfoUc/{id}")
@@ -81,6 +87,14 @@ public class MemberController {
     @ApiOperation("统计每天的注册人数")
     public Integer countRegister(@PathVariable("day") String date){
         return memberService.countRegisterDay(date);
+    }
+
+    @PostMapping("updateMemberInfo")
+    @ApiOperation("更新用户信息")
+    public Result updateMemberInfo(@RequestBody Member member) {
+        member.setPassword(MD5.encrypt(member.getPassword()));
+        memberService.updateById(member);
+        return Result.ok();
     }
 }
 

@@ -49,17 +49,29 @@ public class DailyServiceImpl extends ServiceImpl<DailyMapper, Daily> implements
         if (daily == null) {
             daily = new Daily();
             daily.setDateCalculated(day);
-            daily.setLoginNum(loginNum);
+            if(loginNum == null) {
+                daily.setLoginNum(0);
+            }else{
+                daily.setLoginNum(loginNum);
+            }
+            if (videoViewNum == null) {
+                daily.setVideoViewNum(0);
+            }else{
+                daily.setVideoViewNum(videoViewNum);
+            }
             daily.setRegisterNum(countRegister);
             daily.setCourseNum(courseNum);
-            daily.setVideoViewNum(videoViewNum);
             baseMapper.insert(daily);
         }else{
             daily.setDateCalculated(day);
-            daily.setLoginNum(loginNum);
+            if(loginNum != null) {
+                daily.setLoginNum(loginNum);
+            }
+            if (videoViewNum != null) {
+                daily.setVideoViewNum(videoViewNum);
+            }
             daily.setRegisterNum(countRegister);
             daily.setCourseNum(courseNum);
-            daily.setVideoViewNum(videoViewNum);
             baseMapper.updateById(daily);
         }
         if (!DateUtil.formatDate(new Date()).equals(day)) {

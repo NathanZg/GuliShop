@@ -1,4 +1,4 @@
-package com.ekertree.ucenter.entity;
+package com.ekertree.acl.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
@@ -12,18 +12,18 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 会员表
+ * 用户表
  * </p>
  *
- * @author ekertree
- * @since 2022-07-18
+ * @author testjava
+ * @since 2020-01-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("ucenter_member")
-@ApiModel(value="Member对象", description="会员表")
-public class Member implements Serializable {
+@TableName("acl_user")
+@ApiModel(value="User对象", description="用户表")
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,31 +32,19 @@ public class Member implements Serializable {
     private String id;
 
     @ApiModelProperty(value = "微信openid")
-    private String openid;
-
-    @ApiModelProperty(value = "手机号")
-    private String mobile;
+    private String username;
 
     @ApiModelProperty(value = "密码")
     private String password;
 
     @ApiModelProperty(value = "昵称")
-    private String nickname;
-
-    @ApiModelProperty(value = "性别 1 女，2 男")
-    private Integer sex;
-
-    @ApiModelProperty(value = "年龄")
-    private Integer age;
+    private String nickName;
 
     @ApiModelProperty(value = "用户头像")
-    private String avatar;
+    private String salt;
 
     @ApiModelProperty(value = "用户签名")
-    private String sign;
-
-    @ApiModelProperty(value = "是否禁用 1（true）已禁用，  0（false）未禁用")
-    private Boolean isDisabled;
+    private String token;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     @TableField(fill = FieldFill.INSERT)

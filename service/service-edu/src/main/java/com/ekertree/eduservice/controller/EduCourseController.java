@@ -114,5 +114,12 @@ public class EduCourseController {
     public Integer getCourseCount(){
         return eduCourseService.count(null);
     }
+
+    @GetMapping("addCourseViewCount/{courseId}")
+    @ApiOperation("增加一次课程访问量")
+    public Result addCourseViewCount(@PathVariable("courseId") String courseId) {
+        eduCourseService.addCourseViewCount(courseId);
+        return Result.ok();
+    }
 }
 

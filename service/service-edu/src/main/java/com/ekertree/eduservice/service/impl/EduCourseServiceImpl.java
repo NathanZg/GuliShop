@@ -21,9 +21,11 @@ import com.ekertree.servicebase.excetionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +47,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     private EduChapterService eduChapterService;
 
-    public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService, EduVideoService eduVideoService, EduChapterService eduChapterService) {
+    private RedisTemplate<String,Object> redisTemplate;
+
+    public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService, EduVideoService eduVideoService, EduChapterService eduChapterService, RedisTemplate<String, Object> redisTemplate) {
         this.eduCourseDescriptionService = eduCourseDescriptionService;
         this.eduVideoService = eduVideoService;
         this.eduChapterService = eduChapterService;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -248,5 +253,34 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         EduCourse course = baseMapper.selectById(courseId);
         course.setBuyCount(course.getBuyCount() + 1);
         baseMapper.updateById(course);
+    }
+
+    @Override
+    public void addCourseViewCount(String courseId) {
+        redisTemplate.opsForValue().increment("courseViewCount::"+courseId);
+    }
+
+    @Override
+    public void saveCourseViewCount() {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        List<EduCourse> eduCourses = baseMapper.selectList(null);
+        List<String> courseIds = new ArrayList<>();
+        List<Long> courseView = new ArrayList<>();
+        eduCourses.forEach(course->{
+            courseIds.add(course.getId());
+            courseView.add(course.getViewCount());
+        });
+        for (int i = 0; i < courseIds.size(); i++) {
+            String courseId = courseIds.get(i);
+            Long oleCourseView = courseView.get(i);
+            Integer view = (Integer) redisTemplate.opsForValue().get("courseViewCount::" + courseId);
+            if (view != null) {
+                EduCourse course = new EduCourse();
+                course.setId(courseId);
+                course.setViewCount(oleCourseView + view);
+                baseMapper.updateById(course);
+                redisTemplate.delete("courseViewCount::" + courseId);
+            }
+        }
     }
 }
