@@ -59,7 +59,7 @@ public class CommentFrontController {
     public Result addComment(@RequestBody EduComment comment, HttpServletRequest request) {
         String memberId = JwtUtils.getMemberIdByJwtToken(request);
         if (StringUtils.isEmpty(memberId)) {
-            return Result.error().setCode(28004).setMessage("请先登录!");
+            return Result.error().setCode(28004).setMessage("请先登录!").data("courseId", comment.getCourseId());
         }
         comment.setMemberId(memberId);
         CommentUserVo commentUserVo = ucenterClient.getInfoUc(memberId);
